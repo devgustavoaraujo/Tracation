@@ -10,6 +10,7 @@ export const style = StyleSheet.create({
     width: 330,
     height: 60,
     borderRadius: 15,
+    top: 150,
   },
   searchMenu: {
     justifyContent: "space-between",

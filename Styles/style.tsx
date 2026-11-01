@@ -4,7 +4,6 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "rgb(16, 17, 21)",
-    justifyContent: "space-between",
     alignItems: "center",
     paddingTop: 50,
     paddingBottom: 50,
@@ -26,9 +25,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
 
-    position: "relative",
-    top: 140,
-    left: 140,
+    position: "absolute",
+    bottom: 100,
+    right: 25,
 
     backgroundColor: "white",
     height: 50,
@@ -40,6 +39,7 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     flexDirection: "row",
+    marginTop: "auto",
 
     width: "90%",
     height: 65,
