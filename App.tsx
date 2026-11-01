@@ -1,23 +1,24 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
+import React, { useState } from "react";
+import { Text, View, TouchableOpacity } from "react-native";
 import { styles } from "./Styles/style";
 import { Ionicons, Feather } from "@expo/vector-icons";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { SearchDisplay } from "./components/search/index";
 import { Card } from "./components/cards/index";
-import Animated, { FadeInDown, FadeInUp, FadeOutDown, Easing, FadeOutUp, ReduceMotion } from "react-native-reanimated";
+import Animated, { FadeInUp, FadeOutUp, ReduceMotion } from "react-native-reanimated";
+import { NovoPedido } from "./components/novoPedido/index";
+import { FloatMenu } from "./components/FloatMenu/index";
 
 export default function App() {
   const [menuAtivo, setMenuAtivo] = useState("pedidos");
   const [search, setSearch] = useState(false);
-  const [criarPedido, setCriarPedido] = useState(true);
 
-  const pedidoNovo = () => {
-    setCriarPedido(!criarPedido);
-  };
   const searchMenu = () => {
     setSearch((prev) => !prev);
+
+    if (menuAtivo != "pedidos") {
+      searchMenu();
+    }
   };
 
   const alterarMenu = (nomeMenu: string) => {
@@ -32,7 +33,7 @@ export default function App() {
 
   const display: Record<string, React.ComponentType> = {
     pedidos: Card,
-    adicionar: Card,
+    adicionar: NovoPedido,
     check: Card,
   };
 
@@ -43,9 +44,12 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.textStyle}>{tituloAtual}</Text>
-        <TouchableOpacity onPress={searchMenu}>
-          <Ionicons name="search" size={26} color="white" />
-        </TouchableOpacity>
+
+        {menuAtivo === "pedidos" && (
+          <TouchableOpacity onPress={searchMenu}>
+            <Ionicons name="search" size={26} color="white" />
+          </TouchableOpacity>
+        )}
       </View>
       <View>
         {search && (
@@ -61,39 +65,9 @@ export default function App() {
         <ComponenteAtivo />
       </View>
 
-      <View style={styles.menu}>
-        <TouchableOpacity style={styles.floatIcon}>
-          <Ionicons name="search" size={20} color="black" />
-        </TouchableOpacity>
+      <FloatMenu menuAtivo={menuAtivo} alterarMenu={alterarMenu} />
 
-        <TouchableOpacity
-          onPress={() => {
-            alterarMenu("pedidos");
-          }}
-          style={[styles.botao, menuAtivo === "pedidos" ? styles.botaoAtivo : null]}
-        >
-          <Ionicons name="car" size={25} color="white" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            alterarMenu("adicionar");
-            pedidoNovo();
-          }}
-          style={[styles.botao, menuAtivo === "adicionar" ? styles.botaoAtivo : null]}
-        >
-          <Ionicons name="add" size={25} color="white" />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => alterarMenu("check")}
-          style={[styles.botao, menuAtivo === "check" ? styles.botaoAtivo : null]}
-        >
-          <FontAwesome name="check-square-o" size={25} color="white" />
-        </TouchableOpacity>
-      </View>
-
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
     </View>
   );
 }
